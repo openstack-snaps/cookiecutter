@@ -1,0 +1,108 @@
+name: {{ cookiecutter.snap_name }}
+version: {{ cookiecutter.openstack_release }}
+summary: {{ cookiecutter.project_summary}}
+description: |
+  {{ cookiecutter.project_description }}
+confinement: classic
+grade: devel
+
+apps:
+  # If the OpenStack service has an API that runs behind uwsgi+nginx, the folowing
+  # app is required.
+  uwsgi:
+    command: >
+      env PYTHONPATH=$PYTHONPATH:$SNAP/lib/python2.7/site-packages
+      $SNAP/usr/bin/python2 $SNAP/bin/snap-openstack {{ cookiecutter.snap_name }}-uwsgi
+    daemon: simple
+  # If the OpenStack service has an API that runs behind uwsgi+nginx, the folowing
+  # app is required.
+  nginx:
+    command: >
+      env PYTHONPATH=$PYTHONPATH:$SNAP/lib/python2.7/site-packages
+      LD_LIBRARY_PATH=$SNAP/usr/lib/x86_64-linux-gnu:$LD_LIBRARY_PATH
+      $SNAP/usr/bin/python2 $SNAP/bin/snap-openstack {{ cookiecutter.snap_name }}-nginx
+    daemon: forking
+  # Following is an example of creating a command app. Aliases should be defined to enable
+  # well-known command names.
+  manage:
+    command: >
+      env PYTHONPATH=$PYTHONPATH:$SNAP/lib/python2.7/site-packages
+      $SNAP/usr/bin/python2 $SNAP/bin/snap-openstack {{ cookiecutter.snap_name }}-manage
+    aliases:
+      - {{ cookiecutter.snap_name }}-manage
+
+parts:
+  # Following is an example of defining a part to build an OpenStack project
+  {{ cookiecutter.snap_name }}:
+    after: [python]
+    plugin: python
+    python-version: python2
+    source: http://tarballs.openstack.org/{{ cookiecutter.snap_name }}/{{ cookiecutter.snap_name }}-stable-{{ cookiecutter.openstack_release }}.tar.gz
+    python-packages:
+      # You'll likely need to pull in additional python packages
+      - git+https://github.com/openstack/snap.openstack#egg=snap.openstack
+    constraints: https://raw.githubusercontent.com/openstack/requirements/stable/{{ cookiecutter.openstack_release }}/upper-constraints.txt
+    build-packages:
+      - gcc
+      - libffi-dev
+      - libssl-dev
+      - libxml2-dev
+      - libxslt1-dev
+    stage:
+      - -usr/bin/2to3
+      - -usr/bin/pydoc
+      - -usr/bin/python2.7
+      - -usr/lib/python2.7
+    install:
+      touch $SNAPCRAFT_PART_INSTALL/lib/python2.7/site-packages/paste/__init__.py
+      touch $SNAPCRAFT_PART_INSTALL/lib/python2.7/site-packages/repoze/__init__.py
+  templates:
+    after: [{{ cookiecutter.snap_name }}]
+    plugin: dump
+    source: snap
+  # Following is an example of including the OpenStack project's config
+  config:
+    after: [{{ cookiecutter.snap_name }}]
+    plugin: dump
+    source: http://tarballs.openstack.org/{{ cookiecutter.snap_name }}/{{ cookiecutter.snap_name }}-stable-{{ cookiecutter.openstack_release }}.tar.gz
+    organize:
+      etc/*.conf: etc/{{ cookiecutter.snap_name }}/
+      etc/*.ini: etc/{{ cookiecutter.snap_name }}/
+      etc/*.json: etc/{{ cookiecutter.snap_name }}/
+      etc/*.templates: etc/{{ cookiecutter.snap_name }}/
+    filesets:
+      etc:
+        - etc/{{ cookiecutter.snap_name }}/*.conf
+        - etc/{{ cookiecutter.snap_name }}/*.ini
+        - etc/{{ cookiecutter.snap_name }}/*.json
+        - etc/{{ cookiecutter.snap_name }}/*.templates
+    stage: [$etc]
+    prime: [$etc]
+  # If the OpenStack service has an API that runs behind uwsgi+nginx, the following
+  # part is required.
+  nginx:
+    source: http://www.nginx.org/download/nginx-1.13.0.tar.gz
+    plugin: autotools
+    configflags:
+      - --prefix=/usr
+      - --http-log-path=/var/snap/{{ cookiecutter.snap_name }}/common/log/nginx-access.log
+      - --error-log-path=/var/snap/{{ cookiecutter.snap_name }}/common/log/nginx-error.log
+      - --lock-path=/var/snap/{{ cookiecutter.snap_name }}/common/lock/nginx.lock
+      - --pid-path=/var/snap/{{ cookiecutter.snap_name }}/common/run/nginx.pid
+    build-packages:
+      - libpcre3-dev
+      - libssl-dev
+  # The following part is required when building classic python snaps
+  python:
+    source: https://www.python.org/ftp/python/2.7.13/Python-2.7.13.tar.xz
+    plugin: autotools
+    configflags:
+      - --prefix=/usr
+      - --enable-shared
+      - --enable-unicode=ucs4
+    build-packages:
+      - libssl-dev
+    prime:
+      - -usr/include
+    install:
+      $SNAPCRAFT_PART_INSTALL/usr/bin/python2 -m ensurepip

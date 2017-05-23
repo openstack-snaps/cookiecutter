@@ -1,0 +1,9 @@
+{
+    "snap_name": "the name of the snap",
+    "repo_name": "the name of the git repo (snap-name)",
+    "repo_group": "the name of the git repo group (openstack)",
+    "launchpad_project": "the name of the project on launchpad (snap-name)",
+    "project_summary": "a short summary of the project (about 6 words or less)",
+    "project_description": "a longer description of the project (a paragraph)",
+    "openstack_release": "the openstack release codename"
+}

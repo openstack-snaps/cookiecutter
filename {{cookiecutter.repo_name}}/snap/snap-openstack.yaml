@@ -1,0 +1,75 @@
+setup:
+  users:
+    snap-{{ cookiecutter.snap_name }}: [snap-{{ cookiecutter.snap_name }}]
+  default-owner: "root:snap-{{ cookiecutter.snap_name }}"
+  dirs:
+    - "{snap_common}/etc"
+    - "{snap_common}/etc/{{ cookiecutter.snap_name }}"
+    - "{snap_common}/etc/{{ cookiecutter.snap_name }}/conf.d"
+    - "{snap_common}/lib"
+    - "{snap_common}/lock"
+    - "{snap_common}/log"
+    - "{snap_common}/run"
+    # If the OpenStack service has an API that runs behind uwsgi+nginx,
+    # define uwsgi and nginx etc dirs.
+    - "{snap_common}/etc/nginx"
+    - "{snap_common}/etc/nginx/sites-enabled"
+    - "{snap_common}/etc/nginx/snap"
+    - "{snap_common}/etc/nginx/snap/sites-enabled"
+    - "{snap_common}/etc/uwsgi"
+    - "{snap_common}/etc/uwsgi/snap"
+  templates:
+    # The {{ cookiecutter.snap_name }} snap will likely require a template for the corresponding
+    # OpenStack service(s). For example, you may need to render a template such
+    # as the following.
+    {{ cookiecutter.snap_name }}-snap.conf.j2: "{snap_common}/etc/{{ cookiecutter.snap_name }}/conf.d/{{ cookiecutter.snap_name }}-snap.conf"
+    # If the OpenStack service has an API that runs behind uwsgi+nginx,
+    # render nginx config templates.
+    {{ cookiecutter.snap_name }}-nginx.conf.j2: "{snap_common}/etc/nginx/snap/sites-enabled/{{ cookiecutter.snap_name }}.conf"
+    nginx.conf.j2: "{snap_common}/etc/nginx/snap/nginx.conf"
+  copyfiles:
+    # If the OpenStack service has an API that runs behind uwsgi+nginx,
+    # copy nginx config files.
+    "{snap}/usr/conf": "{snap_common}/etc/nginx"
+  rchown:
+    "{snap_common}/lib": "snap-{{ cookiecutter.snap_name }}:snap-{{ cookiecutter.snap_name }}"
+    "{snap_common}/lock": "snap-{{ cookiecutter.snap_name }}:snap-{{ cookiecutter.snap_name }}"
+    "{snap_common}/log": "snap-{{ cookiecutter.snap_name }}:snap-{{ cookiecutter.snap_name }}"
+    "{snap_common}/run": "snap-{{ cookiecutter.snap_name }}:snap-{{ cookiecutter.snap_name }}"
+entry_points:
+  # This is where entry_points are defined for the OpenStack service. For example,
+  # the service may have a database command-line tool such as the following.
+  {{ cookiecutter.snap_name }}-manage:
+    binary: "{snap}/bin/{{ cookiecutter.snap_name }}-manage"
+    config-files:
+      - "{snap}/etc/{{ cookiecutter.snap_name }}/{{ cookiecutter.snap_name }}.conf"
+    config-files-override:
+      - "{snap_common}/etc/{{ cookiecutter.snap_name }}/{{ cookiecutter.snap_name }}.conf"
+    config-dirs:
+      - "{snap_common}/etc/{{ cookiecutter.snap_name }}/conf.d"
+    run-as:
+      snap-{{ cookiecutter.snap_name }}: [snap-{{ cookiecutter.snap_name }}]
+  # If the OpenStack service has an API that runs behind uwsgi+nginx, the
+  # following entry_point must be defined.
+  {{ cookiecutter.snap_name }}-uwsgi:
+    type: uwsgi
+    uwsgi-dir: "{snap_common}/etc/uwsgi/snap"
+    uwsgi-dir-override: "{snap_common}/etc/uwsgi"
+    uwsgi-log: "{snap_common}/log/uwsgi.log"
+    config-files:
+      - "{snap}/etc/{{ cookiecutter.snap_name }}/{{ cookiecutter.snap_name }}.conf"
+    config-files-override:
+      - "{snap_common}/etc/{{ cookiecutter.snap_name }}/{{ cookiecutter.snap_name }}.conf"
+    config-dirs:
+      - "{snap_common}/etc/{{ cookiecutter.snap_name }}/conf.d"
+    log-file: "{snap_common}/log/{{ cookiecutter.snap_name }}.log"
+    templates:
+      uwsgi.ini.j2: "{snap_common}/etc/uwsgi/snap/{{ cookiecutter.snap_name }}.ini"
+    run-as:
+      snap-{{ cookiecutter.snap_name }}: [snap-{{ cookiecutter.snap_name }}]
+  # If the OpenStack service has an API that runs behind uwsgi+nginx, the
+  # following entry_point must be defined.
+  {{ cookiecutter.snap_name }}-nginx:
+    type: nginx
+    config-file: "{snap_common}/etc/nginx/snap/nginx.conf"
+    config-file-override: "{snap_common}/etc/nginx/nginx.conf"
