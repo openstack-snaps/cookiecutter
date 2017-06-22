@@ -8,7 +8,7 @@ This repository contains the source code for the {{ cookiecutter.snap_name }} sn
 
 The {{ cookiecutter.snap_name }} snap can be installed directly from the snap store:
 
-    sudo snap install --edge --classic {{ cookiecutter.snap_name }}
+    sudo snap install --edge {{ cookiecutter.snap_name }}
 
 The {{ cookiecutter.snap_name }} snap is working towards publication across tracks for
 OpenStack releases. The edge channel for each track will contain the tip
@@ -17,8 +17,8 @@ release channels being reserved for released versions. These three channels
 will be used to drive the CI process for validation of snap updates. This
 should result in an experience such as:
 
-    sudo snap install --classic --channel=ocata/stable {{ cookiecutter.snap_name }}
-    sudo snap install --classic --channel=pike/edge {{ cookiecutter.snap_name }}
+    sudo snap install --channel=ocata/stable {{ cookiecutter.snap_name }}
+    sudo snap install --channel=pike/edge {{ cookiecutter.snap_name }}
 
 ## Configuring {{ cookiecutter.snap_name }}
 
@@ -101,11 +101,6 @@ The services for the {{ cookiecutter.snap_name }} snap will log to its $SNAP_COM
 /var/snap/{{ cookiecutter.snap_name }}/common/log.
 
 ## Managing {{ cookiecutter.snap_name }}
-
-The {{ cookiecutter.snap_name }} snap will drop privileges to run daemons and commands under
-a regular user named snap-{{ cookiecutter.snap_name }}. Additionally, permissions and ownership
-of files and directories in /var/snap/{{ cookiecutter.snap_name }}/common/ are modified to
-restrict access from other users.
 
 ### If this snap has any aliases, they should be defined here. For example,
 ### {{ cookiecutter.snap_name }}-manage may be a well-known command that is used to manage

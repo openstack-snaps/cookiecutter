@@ -1,6 +1,6 @@
 # If the OpenStack service has an API that runs behind uwsgi+nginx, you'll need
 # to define this template.
-user snap-{{ cookiecutter.snap_name }} snap-{{ cookiecutter.snap_name }};
+user root root;
 worker_processes auto;
 pid {{ "{{" }} snap_common {{ "}}" }}/run/nginx.pid;
 

@@ -3,38 +3,37 @@ version: {{ cookiecutter.openstack_release }}
 summary: {{ cookiecutter.project_summary}}
 description: |
   {{ cookiecutter.project_description }}
-confinement: classic
+confinement: strict
 grade: devel
 
 apps:
   # If the OpenStack service has an API that runs behind uwsgi+nginx, the folowing
   # app is required.
   uwsgi:
-    command: >
-      env PYTHONPATH=$PYTHONPATH:$SNAP/lib/python2.7/site-packages
-      $SNAP/usr/bin/python2 $SNAP/bin/snap-openstack {{ cookiecutter.snap_name }}-uwsgi
+    command: snap-openstack {{ cookiecutter.snap_name }}-uwsgi
     daemon: simple
+    plugs:
+      - network-bind
   # If the OpenStack service has an API that runs behind uwsgi+nginx, the folowing
   # app is required.
   nginx:
-    command: >
-      env PYTHONPATH=$PYTHONPATH:$SNAP/lib/python2.7/site-packages
-      LD_LIBRARY_PATH=$SNAP/usr/lib/x86_64-linux-gnu:$LD_LIBRARY_PATH
-      $SNAP/usr/bin/python2 $SNAP/bin/snap-openstack {{ cookiecutter.snap_name }}-nginx
+    command: snap-openstack {{ cookiecutter.snap_name }}-nginx
     daemon: forking
+    plugs:
+      - browser-support
+      - network-bind
   # Following is an example of creating a command app. Aliases should be defined to enable
   # well-known command names.
   manage:
-    command: >
-      env PYTHONPATH=$PYTHONPATH:$SNAP/lib/python2.7/site-packages
-      $SNAP/usr/bin/python2 $SNAP/bin/snap-openstack {{ cookiecutter.snap_name }}-manage
+    command: snap-openstack {{ cookiecutter.snap_name }}-manage
     aliases:
       - {{ cookiecutter.snap_name }}-manage
+    plugs:
+      - network
 
 parts:
   # Following is an example of defining a part to build an OpenStack project
   {{ cookiecutter.snap_name }}:
-    after: [python]
     plugin: python
     python-version: python2
     source: http://tarballs.openstack.org/{{ cookiecutter.snap_name }}/{{ cookiecutter.snap_name }}-stable-{{ cookiecutter.openstack_release }}.tar.gz
@@ -48,11 +47,6 @@ parts:
       - libssl-dev
       - libxml2-dev
       - libxslt1-dev
-    stage:
-      - -usr/bin/2to3
-      - -usr/bin/pydoc
-      - -usr/bin/python2.7
-      - -usr/lib/python2.7
     install:
       touch $SNAPCRAFT_PART_INSTALL/lib/python2.7/site-packages/paste/__init__.py
       touch $SNAPCRAFT_PART_INSTALL/lib/python2.7/site-packages/repoze/__init__.py
@@ -89,20 +83,15 @@ parts:
       - --error-log-path=/var/snap/{{ cookiecutter.snap_name }}/common/log/nginx-error.log
       - --lock-path=/var/snap/{{ cookiecutter.snap_name }}/common/lock/nginx.lock
       - --pid-path=/var/snap/{{ cookiecutter.snap_name }}/common/run/nginx.pid
+      - --http-client-body-temp-path=/var/snap/{{ cookiecutter.snap_name }}/common/lib/nginx_client_body
+      - --http-proxy-temp-path=/var/snap/{{ cookiecutter.snap_name }}/common/lib/nginx_proxy
+      - --http-fastcgi-temp-path=/var/snap/{{ cookiecutter.snap_name }}/common/lib/nginx_fastcgi
+      - --http-uwsgi-temp-path=/var/snap/{{ cookiecutter.snap_name }}/common/lib/nginx_uwsgi
+      - --http-scgi-temp-path=/var/snap/{{ cookiecutter.snap_name }}/common/lib/nginx_scgi
     build-packages:
       - libpcre3-dev
       - libssl-dev
-  # The following part is required when building classic python snaps
-  python:
-    source: https://www.python.org/ftp/python/2.7.13/Python-2.7.13.tar.xz
-    plugin: autotools
-    configflags:
-      - --prefix=/usr
-      - --enable-shared
-      - --enable-unicode=ucs4
-    build-packages:
-      - libssl-dev
-    prime:
-      - -usr/include
-    install:
-      $SNAPCRAFT_PART_INSTALL/usr/bin/python2 -m ensurepip
+    prepare: |
+      export SNAP_ROOT="../../.."
+      export SNAP_SOURCE="$SNAP_ROOT/parts/nginx/build"
+      patch -d $SNAP_SOURCE -p1 < $SNAP_ROOT/patches/drop-nginx-setgroups.patch
