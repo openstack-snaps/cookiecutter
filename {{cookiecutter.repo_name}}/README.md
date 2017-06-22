@@ -36,7 +36,7 @@ and $SNAP_COMMON locations:
 
     /var/snap/{{ cookiecutter.snap_name }}/common/etc/
     ├── {{ cookiecutter.snap_name }}
-    │   └── conf.d
+    │   └── {{ cookiecutter.snap_name }}.conf.d
     │       └── {{ cookiecutter.snap_name }}-snap.conf
     ├── nginx
     │   ├── snap
@@ -60,7 +60,7 @@ area. The default {{ cookiecutter.snap_name }} configuration can be overridden a
 
     /var/snap/{{ cookiecutter.snap_name }}/common/etc/
     ├── {{ cookiecutter.snap_name }}
-    │   ├── conf.d
+    │   ├── {{ cookiecutter.snap_name }}.conf.d
     │   │   ├── {{ cookiecutter.snap_name }}-snap.conf
     │   │   ├── database.conf
     │   │   └── rabbitmq.conf
@@ -79,7 +79,7 @@ area. The default {{ cookiecutter.snap_name }} configuration can be overridden a
         └── {{ cookiecutter.snap_name }}.ini
 
 The {{ cookiecutter.snap_name }} configuration can be overridden or augmented by writing
-configuration snippets to files in the conf.d directory.
+configuration snippets to files in the {{ cookiecutter.snap_name }}.conf.d directory.
 
 Alternatively, {{ cookiecutter.snap_name }} configuration can be overridden by adding a full
 {{ cookiecutter.snap_name }}.conf file to the {{ cookiecutter.snap_name }}/ directory. If overriding in this way, you'll

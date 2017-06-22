@@ -3,9 +3,7 @@ setup:
     snap-{{ cookiecutter.snap_name }}: [snap-{{ cookiecutter.snap_name }}]
   default-owner: "root:snap-{{ cookiecutter.snap_name }}"
   dirs:
-    - "{snap_common}/etc"
-    - "{snap_common}/etc/{{ cookiecutter.snap_name }}"
-    - "{snap_common}/etc/{{ cookiecutter.snap_name }}/conf.d"
+    - "{snap_common}/etc/{{ cookiecutter.snap_name }}/{{ cookiecutter.snap_name }}.conf.d"
     - "{snap_common}/lib"
     - "{snap_common}/lock"
     - "{snap_common}/log"
@@ -22,7 +20,7 @@ setup:
     # The {{ cookiecutter.snap_name }} snap will likely require a template for the corresponding
     # OpenStack service(s). For example, you may need to render a template such
     # as the following.
-    {{ cookiecutter.snap_name }}-snap.conf.j2: "{snap_common}/etc/{{ cookiecutter.snap_name }}/conf.d/{{ cookiecutter.snap_name }}-snap.conf"
+    {{ cookiecutter.snap_name }}-snap.conf.j2: "{snap_common}/etc/{{ cookiecutter.snap_name }}/{{ cookiecutter.snap_name }}.conf.d/{{ cookiecutter.snap_name }}-snap.conf"
     # If the OpenStack service has an API that runs behind uwsgi+nginx,
     # render nginx config templates.
     {{ cookiecutter.snap_name }}-nginx.conf.j2: "{snap_common}/etc/nginx/snap/sites-enabled/{{ cookiecutter.snap_name }}.conf"
@@ -46,7 +44,7 @@ entry_points:
     config-files-override:
       - "{snap_common}/etc/{{ cookiecutter.snap_name }}/{{ cookiecutter.snap_name }}.conf"
     config-dirs:
-      - "{snap_common}/etc/{{ cookiecutter.snap_name }}/conf.d"
+      - "{snap_common}/etc/{{ cookiecutter.snap_name }}/{{ cookiecutter.snap_name }}.conf.d"
     run-as:
       snap-{{ cookiecutter.snap_name }}: [snap-{{ cookiecutter.snap_name }}]
   # If the OpenStack service has an API that runs behind uwsgi+nginx, the
@@ -61,7 +59,7 @@ entry_points:
     config-files-override:
       - "{snap_common}/etc/{{ cookiecutter.snap_name }}/{{ cookiecutter.snap_name }}.conf"
     config-dirs:
-      - "{snap_common}/etc/{{ cookiecutter.snap_name }}/conf.d"
+      - "{snap_common}/etc/{{ cookiecutter.snap_name }}/{{ cookiecutter.snap_name }}.conf.d"
     log-file: "{snap_common}/log/{{ cookiecutter.snap_name }}.log"
     templates:
       uwsgi.ini.j2: "{snap_common}/etc/uwsgi/snap/{{ cookiecutter.snap_name }}.ini"
