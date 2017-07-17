@@ -16,16 +16,17 @@ Generate a snap project::
 
     cookiecutter https://github.com/openstack-snaps/snap-cookiecutter.git
     cd $repo_name
+    # Make any necessary changes
     git init
     git add .
     git commit -a
+    git push https://github.com/openstack/$repo_name
 
-Then:
+And then get the project registered on Launchpad and added to the OpenStack
+Infrastructure.
 
-* Make any necessary updates
-
-* Add the project to the OpenStack Infrastructure
-
+If you need any help, you can find the OpenStack Snap team in `#openstack-snaps`
+on Freenode IRC.
 
 .. _OpenStack-Infra: http://docs.openstack.org/infra/system-config
 .. _Tox: http://testrun.org/tox/
