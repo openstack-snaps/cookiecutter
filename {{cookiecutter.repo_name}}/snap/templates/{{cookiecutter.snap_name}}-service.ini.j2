@@ -1,6 +1,7 @@
 # If the OpenStack service has an API that runs behind uwsgi+nginx, you'll need
 # to define this template. Be sure to update the path for the wsgi-file and
-# "api-name" for the socket.
+# "api-name" for the socket. You'll also want to rename this file according to
+# the service it provides.
 [uwsgi]
 wsgi-file = {{ "{{" }} snap {{ "}}" }}/bin/{{ cookiecutter.snap_name }}-wsgi-file-name
 uwsgi-socket = {{ "{{" }} snap_common {{ "}}" }}/run/api-name.sock
