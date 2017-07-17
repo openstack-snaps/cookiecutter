@@ -20,7 +20,6 @@ apps:
     command: snap-openstack {{ cookiecutter.snap_name }}-nginx
     daemon: forking
     plugs:
-      - browser-support
       - network-bind
   # Following is an example of creating a command app. Aliases should be defined to enable
   # well-known command names.
