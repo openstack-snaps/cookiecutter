@@ -19,7 +19,7 @@ Generate a snap project::
     # Make any necessary changes
     git init
     git add .
-    git commit -a
+    git commit -a -m "Initial snap creation"
     git push https://github.com/openstack/$repo_name
 
 And then get the project registered on Launchpad and added to the OpenStack
