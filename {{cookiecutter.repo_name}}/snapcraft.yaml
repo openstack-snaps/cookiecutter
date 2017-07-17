@@ -43,7 +43,7 @@ parts:
       - libssl-dev
       - libxml2-dev
       - libxslt1-dev
-    install:
+    install: |
       touch $SNAPCRAFT_PART_INSTALL/lib/python2.7/site-packages/paste/__init__.py
       touch $SNAPCRAFT_PART_INSTALL/lib/python2.7/site-packages/repoze/__init__.py
       export SNAP_ROOT="../../.."
