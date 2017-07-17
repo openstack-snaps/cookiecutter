@@ -7,11 +7,8 @@ setup:
     - "{snap_common}/run"
     # If the OpenStack service has an API that runs behind uwsgi+nginx,
     # define uwsgi and nginx etc dirs.
-    - "{snap_common}/etc/nginx"
     - "{snap_common}/etc/nginx/sites-enabled"
-    - "{snap_common}/etc/nginx/snap"
     - "{snap_common}/etc/nginx/snap/sites-enabled"
-    - "{snap_common}/etc/uwsgi"
     - "{snap_common}/etc/uwsgi/snap"
   templates:
     # The {{ cookiecutter.snap_name }} snap will likely require a template for the corresponding
