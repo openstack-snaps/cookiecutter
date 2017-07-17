@@ -95,3 +95,8 @@ parts:
       export SNAP_ROOT="../../.."
       export SNAP_SOURCE="$SNAP_ROOT/parts/nginx/build"
       patch -d $SNAP_SOURCE -p1 < $SNAP_ROOT/patches/drop-nginx-setgroups.patch
+  # If the OpenStack service has an API that runs behind uwsgi+nginx, the following
+  # part is required.
+  libxml2:
+    source: http://xmlsoft.org/sources/libxml2-2.9.4.tar.gz
+    plugin: autotools
