@@ -7,6 +7,7 @@ server {
     error_log {{ "{{" }} snap_common {{ "}}" }}/log/nginx-error.log;
     location / {
         include uwsgi_params;
+        include {{ "{{" }} snap {{ "}}" }}/usr/conf/uwsgi_params;
         uwsgi_param SCRIPT_NAME '';
         uwsgi_pass unix://{{ "{{" }} snap_common {{ "}}" }}/run/api-name.sock;
     }
