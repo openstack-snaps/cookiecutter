@@ -51,7 +51,7 @@ entry_points:
       - "{snap_common}/etc/{{ cookiecutter.snap_name }}/{{ cookiecutter.snap_name }}.conf.d"
     log-file: "{snap_common}/log/{{ cookiecutter.snap_name }}.log"
     templates:
-      uwsgi.ini.j2: "{snap_common}/etc/uwsgi/snap/{{ cookiecutter.snap_name }}.ini"
+      {{ cookiecutter.snap_name }}-api.ini.j2: "{snap_common}/etc/uwsgi/snap/{{ cookiecutter.snap_name }}-api.ini"
   # If the OpenStack service has an API that runs behind uwsgi+nginx, the
   # following entry_point must be defined.
   {{ cookiecutter.snap_name }}-nginx:
