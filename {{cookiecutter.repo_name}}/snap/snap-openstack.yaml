@@ -1,7 +1,4 @@
 setup:
-  users:
-    snap-{{ cookiecutter.snap_name }}: [snap-{{ cookiecutter.snap_name }}]
-  default-owner: "root:snap-{{ cookiecutter.snap_name }}"
   dirs:
     - "{snap_common}/etc/{{ cookiecutter.snap_name }}/{{ cookiecutter.snap_name }}.conf.d"
     - "{snap_common}/lib"
