@@ -21,12 +21,9 @@ apps:
     daemon: forking
     plugs:
       - network-bind
-  # Following is an example of creating a command app. Aliases should be defined to enable
-  # well-known command names.
+  # Following is an example of creating a command app.
   manage:
     command: snap-openstack {{ cookiecutter.snap_name }}-manage
-    aliases:
-      - {{ cookiecutter.snap_name }}-manage
     plugs:
       - network
 

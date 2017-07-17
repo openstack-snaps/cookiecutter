@@ -100,17 +100,6 @@ will no longer be used.
 The services for the {{ cookiecutter.snap_name }} snap will log to its $SNAP_COMMON writable area:
 /var/snap/{{ cookiecutter.snap_name }}/common/log.
 
-## Managing {{ cookiecutter.snap_name }}
-
-### If this snap has any aliases, they should be defined here. For example,
-### {{ cookiecutter.snap_name }}-manage may be a well-known command that is used to manage
-### the database for this project.
-The {{ cookiecutter.snap_name }} snap has alias support that enables use of the following
-well-known command. To enable the alias, run the following prior to
-using the command:
-
-    sudo snap alias {{ cookiecutter.snap_name }}.manage {{ cookiecutter.snap_name }}-manage
-
 ## Restarting {{ cookiecutter.snap_name }} services
 
 To restart all {{ cookiecutter.snap_name }} services:
