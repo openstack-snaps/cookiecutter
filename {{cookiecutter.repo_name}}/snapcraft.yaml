@@ -34,7 +34,10 @@ parts:
     python-version: python2
     source: http://tarballs.openstack.org/{{ cookiecutter.snap_name }}/{{ cookiecutter.snap_name }}-stable-{{ cookiecutter.openstack_release }}.tar.gz
     python-packages:
-      # You'll likely need to pull in additional python packages
+      # You may need to pull in additional python packages
+      - pymysql
+      # If the OpenStack service has an API that runs behind uwsgi+nginx, uwsgi is required.
+      - uwsgi
       - git+https://github.com/openstack/snap.openstack#egg=snap.openstack
     constraints: https://raw.githubusercontent.com/openstack/requirements/stable/{{ cookiecutter.openstack_release }}/upper-constraints.txt
     build-packages:
