@@ -35,6 +35,7 @@ parts:
     source: http://tarballs.openstack.org/{{ cookiecutter.snap_name }}/{{ cookiecutter.snap_name }}-stable-{{ cookiecutter.openstack_release }}.tar.gz
     python-packages:
       # You may need to pull in additional python packages
+      - python-memcached
       - pymysql
       # If the OpenStack service has an API that runs behind uwsgi+nginx, uwsgi is required.
       - uwsgi
