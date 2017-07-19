@@ -18,7 +18,7 @@ Generate a snap project::
     cd $repo_name
     # Make any necessary changes
     git init
-    git add .
+    git add *
     git commit -a -m "Initial snap creation"
     git push https://github.com/openstack/$repo_name
 
