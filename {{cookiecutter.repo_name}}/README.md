@@ -45,15 +45,12 @@ and $SNAP_COMMON locations:
     │   │       └── {{ cookiecutter.snap_name }}.conf
     └── uwsgi
         └── snap
-            └── {{ cookiecutter.snap_name }}.ini
+            └── {{ cookiecutter.snap_name }}-api.ini
 
 ### Add any details here on how to configure services for this snap.
 ### Insert a tree of /var/snap/{{ cookiecutter.snap_name }}/common/etc with override files.
 ### If the OpenStack service has an API that runs behind uwsgi+nginx,
 ### the tree may like like this:
-
-The {{ cookiecutter.snap_name }} applications can be configured in a few ways. The directory
-structure can be modified to override config as follows:
 
 The {{ cookiecutter.snap_name }} snap supports configuration updates via its $SNAP_COMMON writable
 area. The default {{ cookiecutter.snap_name }} configuration can be overridden as follows:
@@ -75,8 +72,8 @@ area. The default {{ cookiecutter.snap_name }} configuration can be overridden a
     │   │   └── {{ cookiecutter.snap_name }}.conf
     └── uwsgi
         ├── snap
-        │   └── {{ cookiecutter.snap_name }}.ini
-        └── {{ cookiecutter.snap_name }}.ini
+        │   └── {{ cookiecutter.snap_name }}-api.ini
+        └── {{ cookiecutter.snap_name }}-api.ini
 
 The {{ cookiecutter.snap_name }} configuration can be overridden or augmented by writing
 configuration snippets to files in the {{ cookiecutter.snap_name }}.conf.d directory.
