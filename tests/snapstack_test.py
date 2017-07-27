@@ -10,6 +10,12 @@ class SnapstackTest(unittest.TestCase):
 
         Run a basic smoke test, utilizing our snapstack testing harness.
 
+        snapstack will install a "base" set of snaps, including
+        keystone, nova and neutron, then run the step/s you specify
+        below. You can modify the base if needed, per the instructions
+        in the snapstack
+        docs. (https://github.com/openstack-snaps/snapstack)
+
         '''
         step = Step(
             snap='{{ cookiecutter.repo_name }}',
