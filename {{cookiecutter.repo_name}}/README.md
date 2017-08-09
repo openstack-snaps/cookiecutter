@@ -8,7 +8,7 @@ This repository contains the source code for the {{ cookiecutter.snap_name }} sn
 
 The {{ cookiecutter.snap_name }} snap can be installed directly from the snap store:
 
-    sudo snap install --edge {{ cookiecutter.snap_name }}
+    sudo snap install --channel=ocata/edge {{ cookiecutter.snap_name }}
 
 The {{ cookiecutter.snap_name }} snap is working towards publication across tracks for
 OpenStack releases. The edge channel for each track will contain the tip
